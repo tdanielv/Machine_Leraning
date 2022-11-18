@@ -1,16 +1,7 @@
-# This is a sample Python script.
+import numpy as np
+from scipy import sparse
+from sklearn import datasets
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+matrix = np.array([[7, 8, 5, 5, 3], [10, 11, 6, 7, 5], [5, 3, 6, 2, 5], [6, 7, 5, 4, 2], [7, 10, 7, 5, 0]])
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(np.linalg.det(matrix))
