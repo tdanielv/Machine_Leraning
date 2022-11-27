@@ -12,18 +12,20 @@ df = pd.DataFrame({'bust': [99, 89, 91, 91, 86, 97, NaN],
 
 def pred_kk_by_feature(df, pred_object, pred_feature):
     temp = df.corr()[pred_feature]
+    # Высчитываем коэффициенты корреляции corr по всем столбцам
     KK = temp[temp.index != pred_feature]
-    KK  # КК для всех признаков
+    KK  # КК для всех признаков за исключением столбца где находится искомый параметр
 
     temp = df[df.index != pred_object].mean(axis=0)
+    # mean высчитываем среднее значение по запрошенной оси без строки  искомого объекта
     mean_all_feature = temp[temp.index != pred_feature]
     mean_all_feature  # Среднее значение для всех признаков (кроме предсказываемого) по всем наблюдениям (кроме предсказываемого)
 
-    all_feature_pred_object = df.loc[pred_object][
-        df.loc[pred_object].index != pred_feature]  # Значения известных признаков предсказываемого наблюдения
-    dif_mult_kk = ((
-                               all_feature_pred_object - mean_all_feature) * KK).sum()  # сумма произведений разности известных значений и средних, и КК
-    mean_feature_pred_object = df[pred_feature].mean()  # среднее значение признака
+    all_feature_pred_object = df.loc[pred_object][df.loc[pred_object].index != pred_feature]
+    # Значения известных признаков предсказываемого объекта. Достаем строку, а в ней все столбцы кроме неиствестного
+    dif_mult_kk = ((all_feature_pred_object - mean_all_feature) * KK).sum()
+    # сумма произведений КК и  разности известных значений со средними
+    mean_feature_pred_object = df[pred_feature].mean()  # среднее значение признака где находится искомый
     pred_feature_object = mean_feature_pred_object + 1 / KK.abs().sum() * dif_mult_kk  # получаем предсказание пропущенного значения
 
     print(f'Значение признака, рассчитанное с помощью КК (по признакам) : {round(pred_feature_object, 2)}')
