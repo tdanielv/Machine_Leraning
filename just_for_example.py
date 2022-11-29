@@ -1,29 +1,11 @@
-import pandas as pd
-import numpy as np
-from numpy import NaN
-from sklearn import preprocessing
+from statistics import stdev as Sp
+from statistics import mean
+from scipy.special import erfc
+from math import fabs
 
-dataframe = pd.DataFrame({
-    'Chupa-Chups': [3, 5, 4, 5],
-    'Doshirak': [4, 5, 3, 4],
-    'Boyarishnik': [5, 5, 3, 3],
-    'VAZ': [3, 4, 2, 3],
-    'Semechki': [4, 3, 5, NaN]},
-index=['Vasya', 'Petya', 'Masha', 'Sasha'])
+l = [8.02, 8.16, 3.97, 8.64, 0.84, 4.46, 0.81, 7.74, 8.78, 9.26, 20.46, 29.87, 10.38, 25.71]
 
-def by_feature(df, object, feauture):
-    KK_before = df.corr()[feauture]
-    KK = KK_before[KK_before.index != feauture]
+sp = Sp(l)
+avg = mean(l)
 
-    avg_before = df[df.index != object].mean(axis=0)
-    avg = avg_before[avg_before.index != feauture]
-
-    all_feature_known = df.loc[object][df.loc[object].index != feauture]
-    KK_known_avg = ((all_feature_known - avg) * KK).sum()
-    avg_feature_unknown = df[feauture].mean()
-    P_A = avg_feature_unknown + 1 / KK.abs().sum() * KK_known_avg
-    return P_A
-
-object = 'Sasha'
-feature = 'Semechki'
-print(by_feature(dataframe, object, feature))
+print("%.2f" % sp, "%.2f" % avg, [erfc(fabs(i-avg)/sp) < 1/(2 * len(l)) and i  for i in l])
