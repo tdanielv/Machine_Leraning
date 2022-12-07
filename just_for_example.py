@@ -1,11 +1,16 @@
-from statistics import stdev as Sp
-from statistics import mean
-from scipy.special import erfc
-from math import fabs
+import pandas as pd
+from neulab.Clustering import CGraphMST, CGraph
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+import numpy as np
+d = {'Age': [18, 33, 42, 24, 19, 25], 'Sex': [0, 1, 1, 0, 2, 2]}
+df = pd.DataFrame(data=d, index=['A', 'B', 'C', 'D', 'E', 'F'])
 
-l = [8.02, 8.16, 3.97, 8.64, 0.84, 4.46, 0.81, 7.74, 8.78, 9.26, 20.46, 29.87, 10.38, 25.71]
+clusters = CGraphMST(df,clst_num=2, metric='manhattan', rnd=3, draw=True, info=True)
+clusters2 = CGraph(df,metric='manhattan', r='std', rnd=3, draw=True, info=True)
 
-sp = Sp(l)
-avg = mean(l)
+print(df)
+import matplotlib.pyplot as plt
 
-print("%.2f" % sp, "%.2f" % avg, [erfc(fabs(i-avg)/sp) < 1/(2 * len(l)) and i  for i in l])
+plt.scatter(df.Age, df.Sex, alpha = 0.6, s=10)
+plt.show()
